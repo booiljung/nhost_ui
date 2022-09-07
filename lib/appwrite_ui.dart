@@ -1,7 +1,4 @@
 library appwrite_ui;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'accounts/accounts.dart';
+export 'widgets/widgets.dart';
