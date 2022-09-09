@@ -21,7 +21,7 @@ class _State extends State<SignoutPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: const <Widget>[
             Text(
-              'You have pushed the button this many times:',
+              'You have pushed the button this many times',
             ),
           ],
         ),

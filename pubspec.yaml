@@ -1,7 +1,7 @@
 name: appwrite_ui
 description: A new Flutter package project.
 version: 0.0.1
-homepage:
+homepage: "https://booiljung.github.io"
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
@@ -9,7 +9,8 @@ environment:
 
 dependencies:
   flutter:
-    sdk: flutter
+    sdk: flutter    
+  appwrite: any
 
 dev_dependencies:
   flutter_test:
