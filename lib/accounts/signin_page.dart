@@ -14,7 +14,7 @@ class SigninPage extends StatefulWidget {
 
   final String title;
   final Client client;
-  final void Function(Session) onSignedin;
+  final void Function(User, Session) onSignedin;
 
   @override
   State<SigninPage> createState() => _State();
@@ -27,10 +27,38 @@ class _State extends State<SigninPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: SigninWidget(
-        title: widget.title,
-        client: widget.client,
-        onSignedin: widget.onSignedin,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Expanded(
+            flex: 1,
+            child: Container(),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Expanded(
+                child: Container(),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                constraints: const BoxConstraints(minWidth: 200, maxWidth: 400),
+                child: SigninWidget(
+                  title: widget.title,
+                  client: widget.client,
+                  onSignedin: widget.onSignedin,
+                ),
+              ),
+              Expanded(
+                child: Container(),
+              ),
+            ],
+          ),
+          Expanded(
+            flex: 5,
+            child: Container(),
+          ),
+        ],
       ),
     );
   }

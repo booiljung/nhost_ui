@@ -6,16 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:appwrite_ui/appwrite_ui.dart';
 
 class SigninWidget extends StatefulWidget {
-  const SigninWidget(
-      {Key? key,
-      required this.title,
-      required this.client,
-      required this.onSignedin})
-      : super(key: key);
+  const SigninWidget({
+    Key? key,
+    required this.title,
+    required this.client,
+    required this.onSignedin,
+  }) : super(key: key);
 
   final String title;
   final Client client;
-  final void Function(Session) onSignedin;
+  final void Function(User, Session) onSignedin;
 
   @override
   State<SigninWidget> createState() => _State();
@@ -36,7 +36,7 @@ class _State extends State<SigninWidget> with FutureStateMixin<SigninWidget> {
   @override
   Widget build(BuildContext context) {
     return AwColumn(
-      spacing: 4,
+      spacing: 0,
       children: <Widget>[
         TextFormField(
           controller: _emailController,
@@ -63,7 +63,7 @@ class _State extends State<SigninWidget> with FutureStateMixin<SigninWidget> {
           controller: _passwordController,
           obscureText: !_passwordVisible,
           decoration: InputDecoration(
-            prefixIcon: const Icon(Icons.lock_outlined),
+            prefixIcon: const Icon(Icons.password_outlined),
             labelText: 'password',
             hintText: 'Enter your password',
             suffixIcon: IconButton(
@@ -89,7 +89,7 @@ class _State extends State<SigninWidget> with FutureStateMixin<SigninWidget> {
         const SizedBox(
           height: 16,
         ),
-        TextButton(
+        ElevatedButton(
           onPressed: !running &&
                   _emailController.text.isNotEmpty &&
                   _passwordController.text.isNotEmpty
@@ -101,8 +101,9 @@ class _State extends State<SigninWidget> with FutureStateMixin<SigninWidget> {
                         Session session = await account.createEmailSession(
                             email: _emailController.text,
                             password: _passwordController.text);
-                        developer.log(session.toString());
-                        widget.onSignedin(session);
+                        User user = await account.get();
+                        developer.log('user=$user, session=$session');
+                        widget.onSignedin(user, session);
                       } on AppwriteException catch (e) {
                         developer.log(e.toString());
                       }
@@ -114,52 +115,60 @@ class _State extends State<SigninWidget> with FutureStateMixin<SigninWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             spacing: 8,
             children: [
-              const Icon(Icons.check_outlined),
+              const Icon(Icons.lock_open_outlined),
               Text(running ? "Signning up..." : "Sign in"),
             ],
           ),
         ),
-        Row(
+        const SizedBox(
+          height: 8,
+        ),
+        AwRow(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
+          spacing: 8,
           children: [
-            TextButton(
-              onPressed: !running ? () async {} : null,
-              child: AwRow(
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: 8,
-                children: const [
-                  Icon(Icons.check_outlined),
-                  Text("Fogot password?"),
-                ],
+            Expanded(
+              child: TextButton(
+                onPressed: !running ? () async {} : null,
+                child: AwRow(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 8,
+                  children: const [
+                    Icon(Icons.password_outlined),
+                    Text("Fogot password?"),
+                  ],
+                ),
               ),
             ),
-            TextButton(
-              onPressed: !running
-                  ? () async {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return SignupPage(
-                              title: 'Sign up',
-                              client: widget.client,
-                              onSignedup: (User user) {
-                                Navigator.pop(context);
-                                _emailController.text = user.email;
-                              },
-                            );
-                          },
-                        ),
-                      );
-                    }
-                  : null,
-              child: AwRow(
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: 8,
-                children: const [
-                  Icon(Icons.check_outlined),
-                  Text("Sign up"),
-                ],
+            Expanded(
+              child: TextButton(
+                onPressed: !running
+                    ? () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return SignupPage(
+                                title: 'Sign up',
+                                client: widget.client,
+                                onSignedup: (User user) {
+                                  Navigator.pop(context);
+                                  _emailController.text = user.email;
+                                },
+                              );
+                            },
+                          ),
+                        );
+                      }
+                    : null,
+                child: AwRow(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 8,
+                  children: const [
+                    Icon(Icons.person_add_outlined),
+                    Text("Sign up"),
+                  ],
+                ),
               ),
             ),
           ],

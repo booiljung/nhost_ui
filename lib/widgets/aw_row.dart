@@ -168,7 +168,7 @@ class _State extends State<AwRow> {
     if (widget.children.isNotEmpty) {
       children.add(widget.children[0]);
       for (var element in widget.children.skip(1)) {
-        children.add(SizedBox(height: widget.spacing));
+        children.add(SizedBox(width: widget.spacing));
         children.add(element);
       }
     }
