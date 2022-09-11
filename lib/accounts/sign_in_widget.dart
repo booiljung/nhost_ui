@@ -1,27 +1,28 @@
 import 'dart:developer' as developer;
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
 import 'package:appwrite_ui/appwrite_ui.dart';
 
-class SigninWidget extends StatefulWidget {
-  const SigninWidget({
+class SignInWidget extends StatefulWidget {
+  const SignInWidget({
     Key? key,
     required this.title,
     required this.client,
-    required this.onSignedin,
+    required this.onSignedIn,
   }) : super(key: key);
 
   final String title;
   final Client client;
-  final void Function(User, Session) onSignedin;
+  final void Function(User, Session) onSignedIn;
 
   @override
-  State<SigninWidget> createState() => _State();
+  State<SignInWidget> createState() => _State();
 }
 
-class _State extends State<SigninWidget> with FutureStateMixin<SigninWidget> {
+class _State extends State<SignInWidget> with FutureStateMixin<SignInWidget> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
   late bool _passwordVisible = false;
@@ -50,8 +51,7 @@ class _State extends State<SigninWidget> with FutureStateMixin<SigninWidget> {
           validator: (value) {
             return value == null ||
                     value.isEmpty ||
-                    !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                        .hasMatch(value)
+                    !EmailValidator.validate(value)
                 ? "email is required"
                 : null;
           },
@@ -92,6 +92,7 @@ class _State extends State<SigninWidget> with FutureStateMixin<SigninWidget> {
         ElevatedButton(
           onPressed: !running &&
                   _emailController.text.isNotEmpty &&
+                  EmailValidator.validate(_emailController.text) &&
                   _passwordController.text.isNotEmpty
               ? () async {
                   await run(
@@ -103,7 +104,7 @@ class _State extends State<SigninWidget> with FutureStateMixin<SigninWidget> {
                             password: _passwordController.text);
                         User user = await account.get();
                         developer.log('user=$user, session=$session');
-                        widget.onSignedin(user, session);
+                        widget.onSignedIn(user, session);
                       } on AppwriteException catch (e) {
                         developer.log(e.toString());
                       }
@@ -129,7 +130,12 @@ class _State extends State<SigninWidget> with FutureStateMixin<SigninWidget> {
           children: [
             Expanded(
               child: TextButton(
-                onPressed: !running ? () async {} : null,
+                onPressed: !running
+                    ? () async {
+                        Navigator.pushNamed(
+                            context, "/accounts/password/reset");
+                      }
+                    : null,
                 child: AwRow(
                   mainAxisAlignment: MainAxisAlignment.center,
                   spacing: 8,
@@ -148,10 +154,10 @@ class _State extends State<SigninWidget> with FutureStateMixin<SigninWidget> {
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return SignupPage(
+                              return SignUpPage(
                                 title: 'Sign up',
                                 client: widget.client,
-                                onSignedup: (User user) {
+                                onSignedUp: (User user) {
                                   Navigator.pop(context);
                                   _emailController.text = user.email;
                                 },

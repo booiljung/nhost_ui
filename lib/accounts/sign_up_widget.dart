@@ -1,27 +1,28 @@
 import 'dart:developer' as developer;
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
 import 'package:appwrite_ui/appwrite_ui.dart';
 
-class SignupWidget extends StatefulWidget {
-  const SignupWidget(
+class SignUpWidget extends StatefulWidget {
+  const SignUpWidget(
       {Key? key,
       required this.title,
       required this.client,
-      required this.onSignedup})
+      required this.onSignedUp})
       : super(key: key);
 
   final String title;
   final Client client;
-  final void Function(User) onSignedup;
+  final void Function(User) onSignedUp;
 
   @override
-  State<SignupWidget> createState() => _State();
+  State<SignUpWidget> createState() => _State();
 }
 
-class _State extends State<SignupWidget> with FutureStateMixin<SignupWidget> {
+class _State extends State<SignUpWidget> with FutureStateMixin<SignUpWidget> {
   late TextEditingController _emailController;
   late TextEditingController _nameController;
   late TextEditingController _password1Controller;
@@ -53,8 +54,7 @@ class _State extends State<SignupWidget> with FutureStateMixin<SignupWidget> {
           validator: (value) {
             return value == null ||
                     value.isEmpty ||
-                    !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                        .hasMatch(value)
+                    !EmailValidator.validate(value)
                 ? "email is required"
                 : null;
           },
@@ -112,6 +112,7 @@ class _State extends State<SignupWidget> with FutureStateMixin<SignupWidget> {
           onPressed: !running &&
                   _emailController.text.isNotEmpty &&
                   _nameController.text.isNotEmpty &&
+                  EmailValidator.validate(_emailController.text) &&
                   _password1Controller.text.isNotEmpty
               ? () async {
                   await run(
@@ -124,7 +125,7 @@ class _State extends State<SignupWidget> with FutureStateMixin<SignupWidget> {
                           email: _emailController.text,
                           password: _password1Controller.text,
                         );
-                        widget.onSignedup(user);
+                        widget.onSignedUp(user);
                       } on AppwriteException catch (e) {
                         developer.log(e.toString());
                       }

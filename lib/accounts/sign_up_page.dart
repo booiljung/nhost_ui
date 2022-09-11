@@ -4,23 +4,23 @@ import 'package:flutter/material.dart';
 
 import 'package:appwrite_ui/appwrite_ui.dart';
 
-class SignupPage extends StatefulWidget {
-  const SignupPage({
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({
     Key? key,
     required this.title,
     required this.client,
-    required this.onSignedup,
+    required this.onSignedUp,
   }) : super(key: key);
 
   final String title;
   final Client client;
-  final void Function(User) onSignedup;
+  final void Function(User) onSignedUp;
 
   @override
-  State<SignupPage> createState() => _State();
+  State<SignUpPage> createState() => _State();
 }
 
-class _State extends State<SignupPage> {
+class _State extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,10 +43,10 @@ class _State extends State<SignupPage> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 constraints: const BoxConstraints(minWidth: 200, maxWidth: 400),
-                child: SignupWidget(
+                child: SignUpWidget(
                   title: widget.title,
                   client: widget.client,
-                  onSignedup: widget.onSignedup,
+                  onSignedUp: widget.onSignedUp,
                 ),
               ),
               Expanded(

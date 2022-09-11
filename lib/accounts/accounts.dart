@@ -1,6 +1,10 @@
-export 'signin_page.dart';
-export 'signin_widget.dart';
-export 'signout_page.dart';
-export 'signout_widget.dart';
-export 'signup_page.dart';
-export 'signup_widget.dart';
+export 'password_confirm_page.dart';
+export 'password_confirm_widget.dart';
+export 'password_reset_page.dart';
+export 'password_reset_widget.dart';
+export 'sign_in_page.dart';
+export 'sign_in_widget.dart';
+export 'sign_out_page.dart';
+export 'sign_out_widget.dart';
+export 'sign_up_page.dart';
+export 'sign_up_widget.dart';

@@ -4,25 +4,23 @@ import 'package:flutter/material.dart';
 
 import 'package:appwrite_ui/appwrite_ui.dart';
 
-class SignoutPage extends StatefulWidget {
-  const SignoutPage({
+class PasswordConfirmPage extends StatefulWidget {
+  const PasswordConfirmPage({
     Key? key,
     required this.title,
     required this.client,
-    required this.session,
-    required this.onSignedout,
+    required this.onConfirm,
   }) : super(key: key);
 
   final String title;
   final Client client;
-  final Session? session;
-  final void Function() onSignedout;
+  final void Function() onConfirm;
 
   @override
-  State<SignoutPage> createState() => _State();
+  State<PasswordConfirmPage> createState() => _State();
 }
 
-class _State extends State<SignoutPage> {
+class _State extends State<PasswordConfirmPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,11 +43,10 @@ class _State extends State<SignoutPage> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 constraints: const BoxConstraints(minWidth: 200, maxWidth: 400),
-                child: SignoutWidget(
+                child: PasswordConfirmWidget(
                   title: widget.title,
                   client: widget.client,
-                  session: widget.session,
-                  onSignedout: widget.onSignedout,
+                  onConfirm: widget.onConfirm,
                 ),
               ),
               Expanded(

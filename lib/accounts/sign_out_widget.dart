@@ -5,25 +5,25 @@ import 'package:flutter/material.dart';
 
 import 'package:appwrite_ui/appwrite_ui.dart';
 
-class SignoutWidget extends StatefulWidget {
-  const SignoutWidget({
+class SignOutWidget extends StatefulWidget {
+  const SignOutWidget({
     Key? key,
     required this.title,
     required this.client,
     this.session,
-    required this.onSignedout,
+    required this.onSignedOut,
   }) : super(key: key);
 
   final String title;
   final Client client;
   final Session? session;
-  final void Function() onSignedout;
+  final void Function() onSignedOut;
 
   @override
-  State<SignoutWidget> createState() => _State();
+  State<SignOutWidget> createState() => _State();
 }
 
-class _State extends State<SignoutWidget> with FutureStateMixin<SignoutWidget> {
+class _State extends State<SignOutWidget> with FutureStateMixin<SignOutWidget> {
   @override
   Widget build(BuildContext context) {
     return AwColumn(
@@ -38,7 +38,7 @@ class _State extends State<SignoutWidget> with FutureStateMixin<SignoutWidget> {
                         Account account = Account(widget.client);
                         await account.deleteSession(
                             sessionId: widget.session!.$id);
-                        widget.onSignedout();
+                        widget.onSignedOut();
                       } on AppwriteException catch (e) {
                         developer.log(e.toString());
                       }
