@@ -122,59 +122,86 @@ class _State extends State<SignInWidget> with FutureStateMixin<SignInWidget> {
           ),
         ),
         const SizedBox(
-          height: 8,
+          height: 32,
         ),
         AwRow(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           spacing: 8,
           children: [
             Expanded(
-              child: TextButton(
-                onPressed: !running
-                    ? () async {
-                        Navigator.pushNamed(
-                            context, "/accounts/password/reset");
-                      }
-                    : null,
-                child: AwRow(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 8,
-                  children: const [
-                    Icon(Icons.password_outlined),
-                    Text("Fogot password?"),
-                  ],
-                ),
+              child: Column(
+                children: [
+                  const Text('Forgot password?'),
+                  TextButton(
+                    onPressed: !running
+                        ? () async {
+                            Navigator.pushNamed(
+                                context, "/accounts/password/reset");
+                          }
+                        : null,
+                    child: AwRow(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      spacing: 8,
+                      children: const [
+                        Icon(Icons.password_outlined),
+                        Text("Update password"),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
             Expanded(
-              child: TextButton(
-                onPressed: !running
-                    ? () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return SignUpPage(
-                                title: 'Sign up',
-                                client: widget.client,
-                                onSignedUp: (User user) {
-                                  Navigator.pop(context);
-                                  _emailController.text = user.email;
+              child: Column(
+                children: [
+                  const Text('No account?'),
+                  TextButton(
+                    onPressed: !running
+                        ? () async {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return SignUpPage(
+                                    title: 'Sign up',
+                                    client: widget.client,
+                                    onSignedUp: (User user) {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute<void>(
+                                          builder: (BuildContext context) {
+                                            return MessagePage(
+                                              title: 'A email sent',
+                                              messageText:
+                                                  'A email sent to ${user.email}\n'
+                                                  'Open email and verify link',
+                                              confirmText: 'Confirm',
+                                              onConfirm: () {
+                                                Navigator.pop(context);
+                                                _emailController.text =
+                                                    user.email;
+                                              },
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                  );
                                 },
-                              );
-                            },
-                          ),
-                        );
-                      }
-                    : null,
-                child: AwRow(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 8,
-                  children: const [
-                    Icon(Icons.person_add_outlined),
-                    Text("Sign up"),
-                  ],
-                ),
+                              ),
+                            );
+                          }
+                        : null,
+                    child: AwRow(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      spacing: 8,
+                      children: const [
+                        Icon(Icons.person_add_outlined),
+                        Text("Sign up"),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

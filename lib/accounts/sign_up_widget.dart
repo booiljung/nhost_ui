@@ -47,15 +47,15 @@ class _State extends State<SignUpWidget> with FutureStateMixin<SignUpWidget> {
           keyboardType: TextInputType.emailAddress,
           decoration: const InputDecoration(
             prefixIcon: Icon(Icons.email_outlined),
-            labelText: "email",
-            hintText: 'Enter your email',
+            labelText: "Email address",
+            hintText: 'Enter your email address for sign in',
           ),
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (value) {
             return value == null ||
                     value.isEmpty ||
                     !EmailValidator.validate(value)
-                ? "email is required"
+                ? "Email address is required"
                 : null;
           },
           onChanged: (value) {
@@ -67,7 +67,7 @@ class _State extends State<SignUpWidget> with FutureStateMixin<SignUpWidget> {
           keyboardType: TextInputType.name,
           decoration: const InputDecoration(
             prefixIcon: Icon(Icons.person_outlined),
-            labelText: "first and last name",
+            labelText: "First and last name",
             hintText: 'Enter your first and last name',
           ),
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -84,7 +84,7 @@ class _State extends State<SignUpWidget> with FutureStateMixin<SignUpWidget> {
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.password_outlined),
             labelText: 'password',
-            hintText: 'Enter your password',
+            hintText: 'Enter your password for sign in',
             suffixIcon: IconButton(
               icon: Icon(
                   _password1Visible ? Icons.visibility : Icons.visibility_off),
