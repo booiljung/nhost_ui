@@ -2,6 +2,8 @@ export 'password_confirm_page.dart';
 export 'password_confirm_widget.dart';
 export 'password_reset_page.dart';
 export 'password_reset_widget.dart';
+export 'password_update_page.dart';
+export 'password_update_widget.dart';
 export 'sign_in_page.dart';
 export 'sign_in_widget.dart';
 export 'sign_out_page.dart';
