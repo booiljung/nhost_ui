@@ -71,7 +71,7 @@ class _State extends State<PasswordResetWidget>
                         Account account = Account(widget.client);
                         Token token = await account.createRecovery(
                             email: _emailController.text,
-                            url: "https:www.appwrite.io");
+                            url: "https://www.appwrite.io");
                         User user = await account.get();
                         developer.log('user=$user, session=$token');
                         widget.onReset(token);

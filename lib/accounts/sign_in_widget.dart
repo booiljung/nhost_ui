@@ -136,7 +136,7 @@ class _State extends State<SignInWidget> with FutureStateMixin<SignInWidget> {
                     onPressed: !running
                         ? () async {
                             Navigator.pushNamed(
-                                context, "/accounts/password/reset");
+                                context, "/account/recovery");
                           }
                         : null,
                     child: AwRow(
