@@ -1,10 +1,9 @@
 import 'dart:developer' as developer;
-import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
+import 'package:http/http.dart' as http;
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-
-import 'package:appwrite_ui/appwrite_ui.dart';
+import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
+import 'package:nhost_ui/nhost_ui.dart';
 
 class SignUpWidget extends StatefulWidget {
   const SignUpWidget(
@@ -15,8 +14,8 @@ class SignUpWidget extends StatefulWidget {
       : super(key: key);
 
   final String title;
-  final Client client;
-  final void Function(User) onSignedUp;
+  final NhostClient client;
+  final void Function() onSignedUp;
 
   @override
   State<SignUpWidget> createState() => _State();
@@ -24,7 +23,6 @@ class SignUpWidget extends StatefulWidget {
 
 class _State extends State<SignUpWidget> with FutureStateMixin<SignUpWidget> {
   late TextEditingController _emailController;
-  late TextEditingController _nameController;
   late TextEditingController _password1Controller;
   late bool _password1Visible = false;
 
@@ -32,7 +30,6 @@ class _State extends State<SignUpWidget> with FutureStateMixin<SignUpWidget> {
   void initState() {
     super.initState();
     _emailController = TextEditingController();
-    _nameController = TextEditingController();
     _password1Controller = TextEditingController();
 
   }
@@ -57,22 +54,6 @@ class _State extends State<SignUpWidget> with FutureStateMixin<SignUpWidget> {
                     !EmailValidator.validate(value)
                 ? "Email address is required"
                 : null;
-          },
-          onChanged: (value) {
-            setState(() {});
-          },
-        ),
-        TextFormField(
-          controller: _nameController,
-          keyboardType: TextInputType.name,
-          decoration: const InputDecoration(
-            prefixIcon: Icon(Icons.person_outlined),
-            labelText: "First and last name",
-            hintText: 'Enter your first and last name',
-          ),
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (value) {
-            return value == null || value.isEmpty ? "name is required" : null;
           },
           onChanged: (value) {
             setState(() {});
@@ -111,22 +92,17 @@ class _State extends State<SignUpWidget> with FutureStateMixin<SignUpWidget> {
         ElevatedButton(
           onPressed: !running &&
                   _emailController.text.isNotEmpty &&
-                  _nameController.text.isNotEmpty &&
                   EmailValidator.validate(_emailController.text) &&
                   _password1Controller.text.isNotEmpty
               ? () async {
                   await run(
                     () async {
                       try {
-                        Account account = Account(widget.client);
-                        User user = await account.create(
-                          userId: "unique()",
-                          name: _nameController.text,
-                          email: _emailController.text,
-                          password: _password1Controller.text,
-                        );
-                        widget.onSignedUp(user);
-                      } on AppwriteException catch (e) {
+                        await widget.client.auth.signUp(email: _emailController.text, password: _password1Controller.text);
+                        widget.onSignedUp();
+                      } on ApiException catch (e) {
+                        developer.log(e.toString());
+                      } on http.ClientException catch (e) {
                         developer.log(e.toString());
                       }
                     },

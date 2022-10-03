@@ -1,8 +1,5 @@
-import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
-
-import 'package:appwrite_ui/appwrite_ui.dart';
+import 'package:nhost_ui/nhost_ui.dart';
 
 class AwSolidButton extends StatefulWidget {
   AwSolidButton({

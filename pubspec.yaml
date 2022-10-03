@@ -1,4 +1,4 @@
-name: appwrite_ui
+name: nhost_ui
 description: A new Flutter package project.
 version: 0.0.1
 homepage: "https://booiljung.github.io"
@@ -10,8 +10,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter    
-  appwrite: any
   email_validator: ^2.1.17
+  http: any
+  nhost_sdk: any
+  nhost_flutter_auth: ^2.0.4
 
 dev_dependencies:
   flutter_test:

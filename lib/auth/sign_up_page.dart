@@ -1,26 +1,24 @@
-import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
+import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
+import 'package:nhost_ui/nhost_ui.dart';
 
-import 'package:appwrite_ui/appwrite_ui.dart';
-
-class PasswordUpdatePage extends StatefulWidget {
-  const PasswordUpdatePage({
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({
     Key? key,
     required this.title,
     required this.client,
-    required this.onUpdated,
+    required this.onSignedUp,
   }) : super(key: key);
 
   final String title;
-  final Client client;
-  final void Function(User) onUpdated;
+  final NhostClient client;
+  final void Function() onSignedUp;
 
   @override
-  State<PasswordUpdatePage> createState() => _State();
+  State<SignUpPage> createState() => _State();
 }
 
-class _State extends State<PasswordUpdatePage> {
+class _State extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,10 +41,10 @@ class _State extends State<PasswordUpdatePage> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 constraints: const BoxConstraints(minWidth: 200, maxWidth: 400),
-                child: PasswordUpdateWidget(
+                child: SignUpWidget(
                   title: widget.title,
                   client: widget.client,
-                  onUpdated: widget.onUpdated,
+                  onSignedUp: widget.onSignedUp,
                 ),
               ),
               Expanded(

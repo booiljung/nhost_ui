@@ -1,7 +1,6 @@
 import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
-
-import 'package:appwrite_ui/appwrite_ui.dart';
+import 'package:nhost_ui/nhost_ui.dart';
 
 class MessageWidget extends StatefulWidget {
   const MessageWidget({

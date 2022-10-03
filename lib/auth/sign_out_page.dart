@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
+import 'package:nhost_ui/nhost_ui.dart';
 
-import 'package:appwrite_ui/appwrite_ui.dart';
-
-class PasswordConfirmPage extends StatefulWidget {
-  const PasswordConfirmPage({
+class SignOutPage extends StatefulWidget {
+  const SignOutPage({
     Key? key,
     required this.title,
     required this.client,
-    required this.onConfirm,
+    required this.onSignedOut,
   }) : super(key: key);
 
   final String title;
-  final Client client;
-  final void Function() onConfirm;
+  final NhostClient client;
+  final void Function() onSignedOut;
 
   @override
-  State<PasswordConfirmPage> createState() => _State();
+  State<SignOutPage> createState() => _State();
 }
 
-class _State extends State<PasswordConfirmPage> {
+class _State extends State<SignOutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,10 +41,10 @@ class _State extends State<PasswordConfirmPage> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 constraints: const BoxConstraints(minWidth: 200, maxWidth: 400),
-                child: PasswordConfirmWidget(
+                child: SignOutWidget(
                   title: widget.title,
                   client: widget.client,
-                  onConfirm: widget.onConfirm,
+                  onSignedOut: widget.onSignedOut,
                 ),
               ),
               Expanded(

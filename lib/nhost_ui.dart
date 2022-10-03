@@ -1,5 +1,5 @@
-library appwrite_ui;
+library nhost_ui;
 
-export 'accounts/accounts.dart';
+export 'auth/auth.dart';
 export 'langs/langs.dart';
 export 'widgets/widgets.dart';

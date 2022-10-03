@@ -1,22 +1,19 @@
 import 'dart:developer' as developer;
-import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-
-import 'package:appwrite_ui/appwrite_ui.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
+import 'package:nhost_ui/nhost_ui.dart';
 
 class SignOutWidget extends StatefulWidget {
   const SignOutWidget({
     Key? key,
     required this.title,
     required this.client,
-    this.session,
     required this.onSignedOut,
   }) : super(key: key);
 
   final String title;
-  final Client client;
-  final Session? session;
+  final NhostClient client;
   final void Function() onSignedOut;
 
   @override
@@ -30,16 +27,16 @@ class _State extends State<SignOutWidget> with FutureStateMixin<SignOutWidget> {
       spacing: 0,
       children: <Widget>[
         ElevatedButton(
-          onPressed: !running && widget.session != null
+          onPressed: !running
               ? () async {
                   await run(
                     () async {
                       try {
-                        Account account = Account(widget.client);
-                        await account.deleteSession(
-                            sessionId: widget.session!.$id);
+                        await widget.client.auth.signOut();
                         widget.onSignedOut();
-                      } on AppwriteException catch (e) {
+                      } on ApiException catch (e) {
+                        developer.log(e.toString());
+                      } on http.ClientException catch (e) {
                         developer.log(e.toString());
                       }
                     },

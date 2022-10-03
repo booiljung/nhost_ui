@@ -1,26 +1,25 @@
-import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
+import 'package:nhost_ui/nhost_ui.dart';
 import 'package:flutter/material.dart';
 
-import 'package:appwrite_ui/appwrite_ui.dart';
 
-class SignInPage extends StatefulWidget {
-  const SignInPage({
+class PasswordResetPage extends StatefulWidget {
+  const PasswordResetPage({
     Key? key,
     required this.title,
     required this.client,
-    required this.onSignedIn,
+    required this.onReset,
   }) : super(key: key);
 
   final String title;
-  final Client client;
-  final void Function(User, Session) onSignedIn;
+  final NhostClient client;
+  final void Function() onReset;
 
   @override
-  State<SignInPage> createState() => _State();
+  State<PasswordResetPage> createState() => _State();
 }
 
-class _State extends State<SignInPage> {
+class _State extends State<PasswordResetPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,10 +42,10 @@ class _State extends State<SignInPage> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 constraints: const BoxConstraints(minWidth: 200, maxWidth: 400),
-                child: SignInWidget(
+                child: PasswordResetWidget(
                   title: widget.title,
                   client: widget.client,
-                  onSignedIn: widget.onSignedIn,
+                  onReset: widget.onReset,
                 ),
               ),
               Expanded(

@@ -1,28 +1,24 @@
-import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
+import 'package:nhost_ui/nhost_ui.dart';
 
-import 'package:appwrite_ui/appwrite_ui.dart';
-
-class SignOutPage extends StatefulWidget {
-  const SignOutPage({
+class PasswordUpdatePage extends StatefulWidget {
+  const PasswordUpdatePage({
     Key? key,
     required this.title,
     required this.client,
-    required this.session,
-    required this.onSignedOut,
+    required this.onUpdated,
   }) : super(key: key);
 
   final String title;
-  final Client client;
-  final Session? session;
-  final void Function() onSignedOut;
+  final NhostClient client;
+  final void Function() onUpdated;
 
   @override
-  State<SignOutPage> createState() => _State();
+  State<PasswordUpdatePage> createState() => _State();
 }
 
-class _State extends State<SignOutPage> {
+class _State extends State<PasswordUpdatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,11 +41,10 @@ class _State extends State<SignOutPage> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 constraints: const BoxConstraints(minWidth: 200, maxWidth: 400),
-                child: SignOutWidget(
+                child: PasswordUpdateWidget(
                   title: widget.title,
                   client: widget.client,
-                  session: widget.session,
-                  onSignedOut: widget.onSignedOut,
+                  onUpdated: widget.onUpdated,
                 ),
               ),
               Expanded(

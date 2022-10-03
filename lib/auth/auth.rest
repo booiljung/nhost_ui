@@ -1,0 +1,17 @@
+POST http://0.0.0.0:1337/v1/auth/signup/email-password
+Content-Type: application/json
+
+{
+    "email": "tedfromskyy@gmail.com",
+    "password": "12345678"
+}
+
+###
+
+POST http://0.0.0.0:1337/v1/auth/signin/email-password
+Content-Type: application/json
+
+{
+    "email": "tedfromskyy@gmail.com",
+    "password": "12345678"
+}

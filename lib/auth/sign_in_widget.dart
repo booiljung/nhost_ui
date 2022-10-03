@@ -1,10 +1,10 @@
 import 'dart:developer' as developer;
-import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
+import 'package:http/http.dart' as http;
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:nhost_flutter_auth/nhost_flutter_auth.dart';
+import 'package:nhost_ui/nhost_ui.dart';
 
-import 'package:appwrite_ui/appwrite_ui.dart';
 
 class SignInWidget extends StatefulWidget {
   const SignInWidget({
@@ -15,8 +15,8 @@ class SignInWidget extends StatefulWidget {
   }) : super(key: key);
 
   final String title;
-  final Client client;
-  final void Function(User, Session) onSignedIn;
+  final NhostClient client;
+  final void Function() onSignedIn;
 
   @override
   State<SignInWidget> createState() => _State();
@@ -98,14 +98,12 @@ class _State extends State<SignInWidget> with FutureStateMixin<SignInWidget> {
                   await run(
                     () async {
                       try {
-                        Account account = Account(widget.client);
-                        Session session = await account.createEmailSession(
-                            email: _emailController.text,
-                            password: _passwordController.text);
-                        User user = await account.get();
-                        developer.log('user=$user, session=$session');
-                        widget.onSignedIn(user, session);
-                      } on AppwriteException catch (e) {
+                        developer.log("signining in email: ${_emailController.text}, password: ${_passwordController.text}");
+                        await widget.client.auth.signInEmailPassword(email: _emailController.text, password: _passwordController.text);
+                        widget.onSignedIn();
+                      } on ApiException catch (e) {
+                        developer.log(e.toString());
+                      } on http.ClientException catch (e) {
                         developer.log(e.toString());
                       }
                     },
@@ -144,7 +142,7 @@ class _State extends State<SignInWidget> with FutureStateMixin<SignInWidget> {
                       spacing: 8,
                       children: const [
                         Icon(Icons.password_outlined),
-                        Text("Update password"),
+                        Text("Reset password"),
                       ],
                     ),
                   ),
@@ -165,7 +163,7 @@ class _State extends State<SignInWidget> with FutureStateMixin<SignInWidget> {
                                   return SignUpPage(
                                     title: 'Sign up',
                                     client: widget.client,
-                                    onSignedUp: (User user) {
+                                    onSignedUp: () {
                                       Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute<void>(
@@ -173,13 +171,11 @@ class _State extends State<SignInWidget> with FutureStateMixin<SignInWidget> {
                                             return MessagePage(
                                               title: 'A email sent',
                                               messageText:
-                                                  'A email sent to ${user.email}\n'
+                                                  'A email sent to ${widget.client.auth.currentUser!.email}\n'
                                                   'Open email and verify link',
                                               confirmText: 'Confirm',
                                               onConfirm: () {
                                                 Navigator.pop(context);
-                                                _emailController.text =
-                                                    user.email;
                                               },
                                             );
                                           },

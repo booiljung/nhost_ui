@@ -1,10 +1,9 @@
 import 'dart:developer' as developer;
-import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
+import 'package:http/http.dart' as http;
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-
-import 'package:appwrite_ui/appwrite_ui.dart';
+import 'package:nhost_sdk/nhost_sdk.dart';
+import 'package:nhost_ui/nhost_ui.dart';
 
 class PasswordResetWidget extends StatefulWidget {
   const PasswordResetWidget({
@@ -15,8 +14,8 @@ class PasswordResetWidget extends StatefulWidget {
   }) : super(key: key);
 
   final String title;
-  final Client client;
-  final void Function(Token) onReset;
+  final NhostClient client;
+  final void Function() onReset;
 
   @override
   State<PasswordResetWidget> createState() => _State();
@@ -68,23 +67,12 @@ class _State extends State<PasswordResetWidget>
                   await run(
                     () async {
                       try {
-                        Account account = Account(widget.client);
-                        Token token = await account.createRecovery(
-                            email: _emailController.text,
-                            url: "https://www.appwrite.io");
-                        User user = await account.get();
-                        developer.log('user=$user, session=$token');
-                        widget.onReset(token);
-                      } on AppwriteException catch (e) {
+                        await widget.client.auth.resetPassword(email: _emailController.text);
+                        widget.onReset();
+                      } on ApiException catch (e) {
                         developer.log(e.toString());
-                        Token token = Token(
-                          $id: '',
-                          $createdAt: 0,
-                          userId: '',
-                          secret: '',
-                          expire: 0,
-                        );
-                        widget.onReset(token);
+                      } on http.ClientException catch (e) {
+                        developer.log(e.toString());
                       }
                     },
                   );

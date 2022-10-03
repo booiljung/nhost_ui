@@ -1,10 +1,8 @@
 import 'dart:developer' as developer;
-import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-
-import 'package:appwrite_ui/appwrite_ui.dart';
+import 'package:http/http.dart' as http;
+import 'package:nhost_sdk/nhost_sdk.dart';
+import 'package:nhost_ui/nhost_ui.dart';
 
 class PasswordConfirmWidget extends StatefulWidget {
   const PasswordConfirmWidget({
@@ -15,7 +13,7 @@ class PasswordConfirmWidget extends StatefulWidget {
   }) : super(key: key);
 
   final String title;
-  final Client client;
+  final NhostClient client;
   final void Function() onConfirm;
 
   @override
@@ -79,7 +77,9 @@ class _State extends State<PasswordConfirmWidget>
                         TODO
                         */
                         widget.onConfirm();
-                      } on AppwriteException catch (e) {
+                      } on ApiException catch (e) {
+                        developer.log(e.toString());
+                      } on http.ClientException catch (e) {
                         developer.log(e.toString());
                       }
                     },
